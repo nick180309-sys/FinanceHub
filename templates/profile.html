@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - FinanceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .header-nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .header-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-divider {
+            text-align: center;
+            margin: 30px 0;
+            color: #ccc;
+            font-size: 12px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .info-box {
+            background: #f0f5ff;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background-color: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+        
+        .profile-info {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .profile-info strong {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .profile-info p {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">FinanceHub</div>
+            <div class="header-nav">
+                <a href="{{ url_for('home') }}">Painel</a>
+                <a href="{{ url_for('transactions') }}">Transações</a>
+                <a href="{{ url_for('recurring') }}">Recorrentes</a>
+                <a href="{{ url_for('budgets') }}">Orçamentos</a>
+                <a href="{{ url_for('goals') }}">Metas</a>
+                <a href="{{ url_for('financial_health') }}">Saúde Financeira</a>
+                <a href="{{ url_for('analytics') }}">Analytics</a>
+                <a href="{{ url_for('investment_advisor') }}">Consultor IA</a>
+                <a href="{{ url_for('reports') }}">Relatórios</a>
+                <a href="{{ url_for('monthly_reports') }}">Relatórios Mensais</a>
+                <a href="{{ url_for('family_settings') }}">Família</a>
+                <a href="{{ url_for('backup') }}">Backup</a>
+                <a href="{{ url_for('profile') }}" class="active">Perfil</a>
+                <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="alert alert-success">✓ {{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <div class="card">
+            <h2>👤 Meu Perfil</h2>
+            
+            <div class="profile-info">
+                <strong>Usuário:</strong>
+                <p>{{ user['username'] }}</p>
+            </div>
+            
+            {% if family %}
+            <div class="profile-info">
+                <strong>Família:</strong>
+                <p>{{ family['name'] }}</p>
+            </div>
+            {% endif %}
+            
+            <form method="post">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ user['email'] or '' }}" placeholder="seu@email.com">
+                </div>
+                
+                <div class="form-divider">Segurança</div>
+                
+                <div class="info-box">
+                    💡 Deixe a senha em branco se não deseja alterá-la
+                </div>
+                
+                <div class="form-group">
+                    <label for="new_password">Nova Senha (Opcional)</label>
+                    <input type="password" id="new_password" name="new_password" placeholder="Digite uma nova senha">
+                </div>
+                
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

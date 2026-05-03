@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transações Recorrentes - FinanceHub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #4a5568;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #4a5568;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-links a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        .recurring-form, .recurring-list {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .recurring-form h2, .recurring-list h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .recurring-item {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recurring-info {
+            flex: 1;
+        }
+
+        .recurring-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .recurring-meta {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        .recurring-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .recurring-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .process-btn {
+            background: #10b981;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .process-btn:hover {
+            background: #059669;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #a0aec0;
+            padding: 40px 20px;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .frequency-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #e0e7ff;
+            color: #3730a3;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .recurring-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .recurring-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-sync-alt"></i> Transações Recorrentes</h1>
+            <p>Configure receitas e despesas que se repetem automaticamente</p>
+        </div>
+
+        <div class="nav">
+            <div class="nav-links">
+                <a href="/"><i class="fas fa-home"></i> Painel</a>
+                <a href="/transactions"><i class="fas fa-list"></i> Transações</a>
+                <a href="/budgets"><i class="fas fa-wallet"></i> Orçamentos</a>
+                <a href="/recurring" class="active"><i class="fas fa-sync-alt"></i> Recorrentes</a>
+                <a href="/reports"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                <a href="/family-settings"><i class="fas fa-users"></i> Família</a>
+                <a href="/profile"><i class="fas fa-user"></i> Perfil</a>
+                <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="content">
+            <div class="recurring-form">
+                <h2><i class="fas fa-plus-circle"></i> Nova Transação Recorrente</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <input type="text" name="descricao" id="descricao" placeholder="Ex: Salário, Aluguel, Conta de Luz" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoria">Categoria</label>
+                        <select name="categoria" id="categoria" required>
+                            {% for category in categories %}
+                                <option value="{{ category }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valor">Valor (R$)</label>
+                        <input type="number" name="valor" id="valor" step="0.01" placeholder="0.00" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="frequency">Frequência</label>
+                        <select name="frequency" id="frequency" required>
+                            <option value="monthly">Mensal</option>
+                            <option value="weekly">Semanal</option>
+                            <option value="yearly">Anual</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start_date">Data de Início</label>
+                        <input type="date" name="start_date" id="start_date" value="{{ current_date }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end_date">Data de Fim (Opcional)</label>
+                        <input type="date" name="end_date" id="end_date">
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Criar Transação Recorrente
+                    </button>
+                </form>
+
+                <a href="{{ url_for('process_recurring') }}" class="btn process-btn">
+                    <i class="fas fa-play"></i> Processar Transações do Mês
+                </a>
+            </div>
+
+            <div class="recurring-list">
+                <h2><i class="fas fa-list"></i> Transações Recorrentes Ativas</h2>
+
+                {% if recurring_transactions %}
+                    {% for rec in recurring_transactions %}
+                        <div class="recurring-item">
+                            <div class="recurring-info">
+                                <div class="recurring-title">
+                                    {{ rec.descricao }}
+                                    <span class="frequency-badge">{{ rec.frequency }}</span>
+                                </div>
+                                <div class="recurring-meta">
+                                    {{ rec.categoria }} • Início: {{ rec.start_date }}
+                                    {% if rec.end_date %}• Fim: {{ rec.end_date }}{% endif %}
+                                </div>
+                            </div>
+                            <div class="recurring-value">
+                                R$ {{ "%.2f"|format(rec.valor) }}
+                            </div>
+                            <div class="recurring-actions">
+                                <a href="{{ url_for('delete_recurring', id=rec.id) }}" class="action-btn delete-btn" onclick="return confirm('Tem certeza que deseja remover esta transação recorrente?')">
+                                    <i class="fas fa-trash"></i> Remover
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-sync-alt"></i>
+                        <p>Nenhuma transação recorrente configurada.</p>
+                        <p>Use o formulário ao lado para começar a automatizar suas finanças!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

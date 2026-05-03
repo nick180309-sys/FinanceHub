@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações da Família - FinanceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .header-nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .header-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .family-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .family-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .family-detail {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        
+        .invite-section {
+            background: #f0f5ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .invite-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .invite-code {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px dashed #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            user-select: all;
+        }
+        
+        .copy-hint {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .members-section {
+            margin-top: 30px;
+        }
+        
+        .members-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .member-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .member-info {
+            flex: 1;
+        }
+        
+        .member-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 3px;
+        }
+        
+        .member-email {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .member-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .owner-badge {
+            background: #f59e0b;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">FinanceHub</div>
+            <div class="header-nav">
+                <a href="{{ url_for('home') }}">Painel</a>
+                <a href="{{ url_for('transactions') }}">Transações</a>
+                <a href="{{ url_for('recurring') }}">Recorrentes</a>
+                <a href="{{ url_for('budgets') }}">Orçamentos</a>
+                <a href="{{ url_for('goals') }}">Metas</a>
+                <a href="{{ url_for('financial_health') }}">Saúde Financeira</a>
+                <a href="{{ url_for('analytics') }}">Analytics</a>
+                <a href="{{ url_for('investment_advisor') }}">Consultor IA</a>
+                <a href="{{ url_for('reports') }}">Relatórios</a>
+                <a href="{{ url_for('monthly_reports') }}">Relatórios Mensais</a>
+                <a href="{{ url_for('family_settings') }}" class="active">Família</a>
+                <a href="{{ url_for('backup') }}">Backup</a>
+                <a href="{{ url_for('profile') }}">Perfil</a>
+                <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <a href="{{ url_for('home') }}" class="back-link">← Voltar ao Painel</a>
+        
+        <div class="card">
+            <h2>👨‍👩‍👧‍👦 Configurações da Família</h2>
+            
+            <div class="family-info">
+                <div class="family-name">{{ family['name'] }}</div>
+                <div class="family-detail">👑 Proprietário: {{ family['owner_id'] == user['id'] and 'Você' or 'Outro membro' }}</div>
+                <div class="family-detail">📅 Criada em: {{ family['created_at'][:10] }}</div>
+            </div>
+            
+            <div class="invite-section">
+                <div class="invite-label">📨 Código para Convidar Membros</div>
+                <div class="invite-code" onclick="navigator.clipboard.writeText(this.textContent)">{{ family['invite_code'] }}</div>
+                <div class="copy-hint">Clique para copiar • Compartilhe com membros da sua família</div>
+            </div>
+            
+            <div class="stat-grid">
+                <div class="stat">
+                    <div class="stat-value">{{ members|length }}</div>
+                    <div class="stat-label">Membros da Família</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">{{ dados|length if dados is defined else 0 }}</div>
+                    <div class="stat-label">Transações</div>
+                </div>
+            </div>
+            
+            <div class="members-section">
+                <div class="members-title">👥 Membros</div>
+                
+                {% if members %}
+                    {% for member in members %}
+                        <div class="member-item">
+                            <div class="member-info">
+                                <div class="member-name">{{ member['username'] }}</div>
+                                <div class="member-email">{{ member['email'] or 'Sem email' }}</div>
+                            </div>
+                            {% if member['id'] == family['owner_id'] %}
+                                <div class="member-badge owner-badge">Proprietário</div>
+                            {% else %}
+                                <div class="member-badge">Membro</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👤</div>
+                        <p>Nenhum membro encontrado</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

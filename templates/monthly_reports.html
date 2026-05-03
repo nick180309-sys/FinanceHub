@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios Mensais - FinanceHub</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .header-nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .header-nav .logout {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .report-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .monthly-chart {
+            height: 300px;
+            margin-bottom: 20px;
+        }
+
+        .insights-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .insight-card {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .insight-success {
+            border-left: 4px solid #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .insight-warning {
+            border-left: 4px solid #f59e0b;
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .insight-danger {
+            border-left: 4px solid #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .insight-icon {
+            font-size: 20px;
+        }
+
+        .category-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .category-item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .category-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .income-value {
+            color: #10b981;
+        }
+
+        .expense-value {
+            color: #ef4444;
+        }
+
+        .goals-section {
+            margin-top: 20px;
+        }
+
+        .goal-item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #f59e0b;
+        }
+
+        .goal-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .goal-progress {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .category-breakdown {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <div class="header-title">FinanceHub</div>
+                <div class="header-subtitle">Relatórios Mensais</div>
+            </div>
+            <div class="header-nav">
+                <a href="{{ url_for('home') }}">Painel</a>
+                <a href="{{ url_for('transactions') }}">Transações</a>
+                <a href="{{ url_for('recurring') }}">Recorrentes</a>
+                <a href="{{ url_for('budgets') }}">Orçamentos</a>
+                <a href="{{ url_for('goals') }}">Metas</a>
+                <a href="{{ url_for('financial_health') }}">Saúde Financeira</a>
+                <a href="{{ url_for('analytics') }}">Analytics</a>
+                <a href="{{ url_for('investment_advisor') }}">Consultor IA</a>
+                <a href="{{ url_for('reports') }}">Relatórios</a>
+                <a href="{{ url_for('monthly_reports') }}" class="active">Relatórios Mensais</a>
+                <a href="{{ url_for('family_settings') }}">Família</a>
+                <a href="{{ url_for('backup') }}">Backup</a>
+                <a href="{{ url_for('profile') }}">Perfil</a>
+                <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="report-section">
+            <div class="section-title">
+                <i class="fas fa-chart-line"></i>
+                Evolução Mensal (Últimos 12 meses)
+            </div>
+            <canvas id="monthlyChart" class="monthly-chart"></canvas>
+        </div>
+
+        {% if insights %}
+        <div class="report-section">
+            <div class="section-title">
+                <i class="fas fa-lightbulb"></i>
+                Insights do Mês
+            </div>
+            <div class="insights-grid">
+                {% for insight in insights %}
+                <div class="insight-card insight-{{ insight.type }}">
+                    {% if insight.type == 'success' %}
+                        <div class="insight-icon">✅</div>
+                    {% elif insight.type == 'warning' %}
+                        <div class="insight-icon">⚠️</div>
+                    {% else %}
+                        <div class="insight-icon">ℹ️</div>
+                    {% endif %}
+                    <div>{{ insight.message }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="report-section">
+            <div class="section-title">
+                <i class="fas fa-chart-pie"></i>
+                Quebra por Categoria - {{ current_month }}
+            </div>
+            <div class="category-breakdown">
+                {% for category in category_breakdown %}
+                <div class="category-item">
+                    <div class="category-name">{{ category[0] }}</div>
+                    <div class="category-values">
+                        {% if category[1] > 0 %}
+                        <span class="income-value">R$ {{ "%.2f"|format(category[1]) }}</span>
+                        {% endif %}
+                        {% if category[2] > 0 %}
+                        <span class="expense-value">R$ {{ "%.2f"|format(category[2]) }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if active_goals %}
+        <div class="report-section">
+            <div class="section-title">
+                <i class="fas fa-bullseye"></i>
+                Progresso das Metas
+            </div>
+            <div class="goals-section">
+                {% for goal in active_goals %}
+                <div class="goal-item">
+                    <div class="goal-title">{{ goal['name'] }}</div>
+                    <div class="goal-progress">
+                        <span>R$ {{ "%.2f"|format(goal['current_amount']) }} / R$ {{ "%.2f"|format(goal['target_amount']) }}</span>
+                        <span>{{ "%.1f"|format((goal['current_amount'] / goal['target_amount']) * 100) }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ (goal['current_amount'] / goal['target_amount']) * 100 }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Monthly trend chart
+        const ctx = document.getElementById('monthlyChart').getContext('2d');
+        const monthlyData = {{ monthly_data|tojson }};
+
+        const labels = monthlyData.map(item => {
+            const date = new Date(item[0] + '-01');
+            return date.toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' });
+        });
+
+        const incomeData = monthlyData.map(item => item[1]);
+        const expenseData = monthlyData.map(item => item[2]);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Receitas',
+                    data: incomeData,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Despesas',
+                    data: expenseData,
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'R$ ' + value.toLocaleString('pt-BR');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

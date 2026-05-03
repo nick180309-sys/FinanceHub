@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todas as Transações - FinanceHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .header-nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        .header-nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        h2 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table thead {
+            background: #f9f9f9;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        
+        table tbody tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .value-positive {
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .value-negative {
+            color: #ef4444;
+            font-weight: 600;
+        }
+        
+        .delete-btn {
+            color: #f87171;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .delete-btn:hover {
+            background: #fee;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .transaction-count {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="header-title">FinanceHub</div>
+            <div class="header-nav">
+                <a href="{{ url_for('home') }}" class="active">Painel</a>
+                <a href="{{ url_for('transactions') }}">Transações</a>
+                <a href="{{ url_for('recurring') }}">Recorrentes</a>
+                <a href="{{ url_for('budgets') }}">Orçamentos</a>
+                <a href="{{ url_for('goals') }}">Metas</a>
+                <a href="{{ url_for('financial_health') }}">Saúde Financeira</a>
+                <a href="{{ url_for('analytics') }}">Analytics</a>
+                <a href="{{ url_for('investment_advisor') }}">Consultor IA</a>
+                <a href="{{ url_for('reports') }}">Relatórios</a>
+                <a href="{{ url_for('monthly_reports') }}">Relatórios Mensais</a>
+                <a href="{{ url_for('family_settings') }}">Família</a>
+                <a href="{{ url_for('backup') }}">Backup</a>
+                <a href="{{ url_for('profile') }}">Perfil</a>
+                <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <a href="{{ url_for('home') }}" class="back-link">← Voltar ao Painel</a>
+        
+        <div class="card">
+            <h2>📋 Todas as Transações - {{ family['name'] if family else 'Finanças' }}</h2>
+            
+            <div class="transaction-count">
+                Total: <strong>{{ dados|length }}</strong> transação(ões)
+            </div>
+            
+            {% if dados %}
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Descrição</th>
+                                <th>Categoria</th>
+                                <th>Valor</th>
+                                <th>Adicionado por</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in dados %}
+                                <tr>
+                                    <td><strong>{{ item['data'] }}</strong></td>
+                                    <td>{{ item['descricao'] }}</td>
+                                    <td><span class="category-badge">{{ item['categoria'] }}</span></td>
+                                    <td class="{% if item['valor'] > 0 %}value-positive{% else %}value-negative{% endif %}">
+                                        {% if item['valor'] > 0 %}+{% endif %}R$ {{ "%.2f"|format(item['valor']) }}
+                                    </td>
+                                    <td>{{ item['created_by'] }}</td>
+                                    <td>
+                                        <a href="{{ url_for('delete', id=item['id']) }}" class="delete-btn" onclick="return confirm('Tem certeza que deseja deletar?')">Deletar</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <p>Nenhuma transação registrada ainda</p>
+                    <p style="font-size: 12px; margin-top: 10px;">Volte ao painel e adicione sua primeira transação!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

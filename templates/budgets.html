@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orçamentos - FinanceHub</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            color: #333;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Disable text selection and copying */
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Allow text selection in form inputs */
+        input, textarea, select {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+
+        /* Disable right-click context menu */
+        body {
+            -webkit-touch-callout: none;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .header-nav a:hover, .header-nav a.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .header-nav .logout {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        .budget-form, .budget-list {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .budget-form h2, .budget-list h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .budget-item {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .budget-category {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 16px;
+        }
+
+        .budget-amount {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .budget-progress {
+            margin: 15px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #48bb78 0%, #f6ad55 70%, #f56565 100%);
+            transition: width 0.3s ease;
+        }
+
+        .budget-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 1px solid #9ae6b4;
+        }
+
+        .warning {
+            background: #fef5e7;
+            color: #7c2d12;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f6ad55;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #a0aec0;
+            padding: 40px 20px;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" onkeydown="return disableCtrl(event);" onselectstart="return false;">
+    <!-- Copyright Notice -->
+    <div style="position: fixed; bottom: 10px; right: 10px; background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px; border-radius: 6px; font-size: 10px; z-index: 1000; pointer-events: none;">
+        © 2024 FinanceHub - Todos os direitos reservados
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div>
+                <div class="header-title">FinanceHub</div>
+                <div style="font-size: 12px; opacity: 0.9; margin-top: 5px;">Gerencie as finanças da sua família</div>
+            </div>
+            <div class="header-nav">
+                <a href="{{ url_for('home') }}">Painel</a>
+                <a href="{{ url_for('transactions') }}">Transações</a>
+                <a href="{{ url_for('recurring') }}">Recorrentes</a>
+                <a href="{{ url_for('budgets') }}" class="active">Orçamentos</a>
+                <a href="{{ url_for('goals') }}">Metas</a>
+                <a href="{{ url_for('financial_health') }}">Saúde Financeira</a>
+                <a href="{{ url_for('analytics') }}">Analytics</a>
+                <a href="{{ url_for('investment_advisor') }}">Consultor IA</a>
+                <a href="{{ url_for('reports') }}">Relatórios</a>
+                <a href="{{ url_for('monthly_reports') }}">Relatórios Mensais</a>
+                <a href="{{ url_for('family_settings') }}">Família</a>
+                <a href="{{ url_for('backup') }}">Backup</a>
+                <a href="{{ url_for('profile') }}">Perfil</a>
+                <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="content">
+            <div class="budget-form">
+                <h2><i class="fas fa-plus-circle"></i> Definir Orçamento</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="categoria">Categoria</label>
+                        <select name="categoria" id="categoria" required>
+                            {% for category in categories %}
+                                <option value="{{ category }}">{{ category }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="limite">Limite Mensal (R$)</label>
+                        <input type="number" name="limite" id="limite" step="0.01" min="0" required placeholder="0.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mes">Mês</label>
+                        <select name="mes" id="mes" required>
+                            {% for i in range(1, 13) %}
+                                <option value="{{ i }}" {% if i == current_month %}selected{% endif %}>
+                                    {% if i == 1 %}Janeiro{% elif i == 2 %}Fevereiro{% elif i == 3 %}Março{% elif i == 4 %}Abril{% elif i == 5 %}Maio{% elif i == 6 %}Junho{% elif i == 7 %}Julho{% elif i == 8 %}Agosto{% elif i == 9 %}Setembro{% elif i == 10 %}Outubro{% elif i == 11 %}Novembro{% elif i == 12 %}Dezembro{% endif %}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ano">Ano</label>
+                        <input type="number" name="ano" id="ano" value="{{ current_year }}" required>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Salvar Orçamento
+                    </button>
+                </form>
+            </div>
+
+            <div class="budget-list">
+                <h2><i class="fas fa-list"></i> Orçamentos Ativos</h2>
+
+                {% if budgets %}
+                    {% for budget in budgets %}
+                        <div class="budget-item">
+                            <div class="budget-header">
+                                <span class="budget-category">{{ budget.categoria }}</span>
+                                <span class="budget-amount">R$ {{ "%.2f"|format(budget.limite) }}</span>
+                            </div>
+
+                            {% if budget.percentage > 90 %}
+                                <div class="warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Atenção: Você já gastou {{ "%.1f"|format(budget.percentage) }}% do orçamento!
+                                </div>
+                            {% endif %}
+
+                            <div class="budget-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ [budget.percentage, 100]|min }}%"></div>
+                                </div>
+                            </div>
+
+                            <div class="budget-stats">
+                                <span>Gasto: R$ {{ "%.2f"|format(budget.spent) }}</span>
+                                <span>Restante: R$ {{ "%.2f"|format(budget.remaining) }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-wallet"></i>
+                        <p>Nenhum orçamento definido ainda.</p>
+                        <p>Use o formulário ao lado para começar a controlar seus gastos!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Disable common copy shortcuts
+        function disableCtrl(event) {
+            if (event.ctrlKey && (event.keyCode === 67 || event.keyCode === 86 || event.keyCode === 85 || event.keyCode === 83)) {
+                return false;
+            }
+            return true;
+        }
+
+        // Disable F12 and other dev tools
+        document.addEventListener('keydown', function(event) {
+            if (event.keyCode === 123) { // F12
+                event.preventDefault();
+                return false;
+            }
+            if (event.ctrlKey && event.shiftKey && event.keyCode === 73) { // Ctrl+Shift+I
+                event.preventDefault();
+                return false;
+            }
+            if (event.ctrlKey && event.shiftKey && event.keyCode === 74) { // Ctrl+Shift+J
+                event.preventDefault();
+                return false;
+            }
+            if (event.ctrlKey && event.keyCode === 85) { // Ctrl+U
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        // Disable right-click
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+            return false;
+        });
+    </script>
+</body>
+</html>

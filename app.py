@@ -77,6 +77,23 @@ def init_db():
     )
     """)
     
+    # Create transacoes table
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS transacoes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        family_id INTEGER,
+        user_id INTEGER NOT NULL,
+        valor REAL NOT NULL,
+        descricao TEXT NOT NULL,
+        categoria TEXT NOT NULL,
+        data TEXT NOT NULL,
+        created_by TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(family_id) REFERENCES families(id),
+        FOREIGN KEY(user_id) REFERENCES users(id)
+    )
+    """)
+    
     # Create recurring transactions table
     c.execute("""
     CREATE TABLE IF NOT EXISTS recurring_transactions (
@@ -128,28 +145,6 @@ def init_db():
         FOREIGN KEY(family_id) REFERENCES families(id)
     )
     """)
-    
-    # Migrate transacoes table to add missing columns
-    c.execute("PRAGMA table_info(transacoes)")
-    trans_columns = [row[1] for row in c.fetchall()]
-    
-    try:
-        if 'family_id' not in trans_columns:
-            c.execute("ALTER TABLE transacoes ADD COLUMN family_id INTEGER")
-    except sqlite3.OperationalError:
-        pass
-    
-    try:
-        if 'created_by' not in trans_columns:
-            c.execute("ALTER TABLE transacoes ADD COLUMN created_by TEXT")
-    except sqlite3.OperationalError:
-        pass
-    
-    try:
-        if 'created_at' not in trans_columns:
-            c.execute("ALTER TABLE transacoes ADD COLUMN created_at TEXT DEFAULT CURRENT_TIMESTAMP")
-    except sqlite3.OperationalError:
-        pass
     
     conn.commit()
     conn.close()

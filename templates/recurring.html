@@ -272,7 +272,279 @@
                 justify-content: center;
             }
         }
-    </style>
+    
+        /* ==== MOBILE RESPONSIVE FIXES ==== */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 42px;
+            height: 42px;
+        }
+
+        .hamburger:hover {
+            opacity: 0.85;
+        }
+
+        .header-nav.active {
+            display: flex;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .content {
+                gap: 20px;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .header-content {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .header-nav {
+                display: none;
+                position: fixed;
+                top: 72px;
+                left: 0;
+                right: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 10px 0;
+                gap: 0;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+                z-index: 999;
+                border-top: 1px solid rgba(0, 0, 0, 0.08);
+            }
+
+            .header-nav a {
+                color: #333;
+                padding: 14px 20px;
+                border-radius: 0;
+                display: block;
+                width: 100%;
+            }
+
+            .header-nav a:hover, .header-nav a.active {
+                background: rgba(102, 126, 234, 0.08);
+                color: #222;
+            }
+
+            .header-nav .logout {
+                background: #f4f4f4;
+            }
+
+            .content {
+                grid-template-columns: 1fr !important;
+                gap: 18px;
+            }
+
+            .chart-container {
+                height: 220px;
+            }
+
+            .chart-grid,
+            .stats-grid,
+            .cards-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            input, button, select {
+                min-height: 44px;
+                padding: 12px 14px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 0 12px;
+            }
+
+            label {
+                font-size: 13px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            h2 {
+                font-size: 16px;
+            }
+
+            .chart-container {
+                height: 180px;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            table td, table th {
+                padding: 8px 4px;
+            }
+        }
+
+
+        /* ========== RESPONSIVE MOBILE FIXES ========== */
+        
+        @media (max-width: 1024px) {
+            .container { padding: 0 15px; }
+            .content { gap: 20px; }
+            .chart-container { height: 300px; }
+            .header-nav { gap: 15px; }
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+                padding: 0;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .hamburger:hover { opacity: 0.8; }
+            
+            .header-nav {
+                display: none;
+                position: fixed;
+                left: 0;
+                top: 60px;
+                width: 100%;
+                flex-direction: column;
+                background: white;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                z-index: 999;
+                padding: 10px 0;
+                gap: 0;
+            }
+            
+            .header-nav.active { display: flex; }
+            
+            .header-nav a {
+                padding: 14px 20px;
+                border-radius: 0;
+                color: #333;
+            }
+            
+            .header-nav a.logout { background: #f0f0f0; }
+            .header-content { flex-wrap: wrap; }
+            
+            .content {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .chart-container { height: 200px; }
+            
+            .health-score-circle {
+                width: 150px !important;
+                height: 150px !important;
+            }
+            
+            .chart-grid, .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            input, button, select {
+                min-height: 44px;
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+            
+            .delete-btn, .filter-btn, .action-btn {
+                min-height: 44px;
+                padding: 10px 14px;
+            }
+            
+            .container { padding: 0 10px; }
+            label { font-size: 13px; }
+            .subtitle { font-size: 12px; }
+            .header-title { font-size: 20px; }
+            h2 { font-size: 18px; }
+            h3 { font-size: 16px; }
+            
+            table { font-size: 12px; }
+            table td, table th { padding: 10px 8px; }
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-title { font-size: 18px; }
+            h1 { font-size: 22px; }
+            h2 { font-size: 16px; }
+            .header-subtitle { font-size: 11px; }
+            .container { padding: 0 8px; }
+            
+            input, button, select {
+                min-height: 44px;
+                font-size: 16px;
+                padding: 12px 12px;
+            }
+            
+            .chart-container { height: 180px; }
+            
+            .health-score-circle {
+                width: 120px !important;
+                height: 120px !important;
+            }
+            
+            label { font-size: 12px; }
+            table { font-size: 11px; }
+            table td, table th { padding: 8px 4px; }
+        }
+
+        </style>
 </head>
 <body>
     <div class="container">
@@ -392,5 +664,19 @@
             </div>
         </div>
     </div>
+    <script>
+        function toggleMenu() {
+            const nav = document.querySelector('.header-nav');
+            if (nav) nav.classList.toggle('active');
+        }
+        
+        document.querySelectorAll('.header-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                const nav = document.querySelector('.header-nav');
+                if (nav) nav.classList.remove('active');
+            });
+        });
+
+    </script>
 </body>
 </html>

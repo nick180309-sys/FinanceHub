@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 from flask import Flask, request, render_template, redirect, session, flash, url_for, jsonify, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -5,7 +6,7 @@ import sqlite3
 import uuid
 
 app = Flask(__name__)
-app.secret_key = "change_this_to_a_secure_value"
+app.secret_key = os.environ.get("SECRET_KEY", "change_this_to_a_secure_value")
 
 def db():
     conn = sqlite3.connect("finance.db")
